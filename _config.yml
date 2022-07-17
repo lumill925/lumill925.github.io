@@ -17,7 +17,7 @@ platforms:
 
 navigation:
   - name: Readme
-    link: ./README.md
+    link: ./index.markdown
     sublist:
       - name: Image
         link: ./index.html#small-image
