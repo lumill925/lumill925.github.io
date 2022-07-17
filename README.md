@@ -1,21 +1,11 @@
-# jekyll-theme-minimalistic
+# 7월 11일 ~ 16일 WIL
 
+## 이노베이션 캠프 in 동작 1주차 미니프로젝트
 
-[![Featured](https://img.shields.io/badge/featured%20on-JekyllThemes-red.svg)](https://jekyll-themes.com/jekyll-theme-minimalistic/)
-[![GitHub top language](https://img.shields.io/github/languages/top/vaibhavvikas/jekyll-theme-minimalistic)](#)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/vaibhavvikas/jekyll-theme-minimalistic)](#)
-[![GitHub stars](https://img.shields.io/github/stars/vaibhavvikas/jekyll-theme-minimalistic)](https://github.com/vaibhavvikas/jekyll-theme-minimalistic/stargazers)
-[![Ruby Gem](https://github.com/vaibhavvikas/jekyll-theme-minimalistic/actions/workflows/gem-push.yml/badge.svg)](https://github.com/vaibhavvikas/jekyll-theme-minimalistic/actions/workflows/gem-push.yml)
-[![pages-build-deployment](https://github.com/vaibhavvikas/jekyll-theme-minimalistic/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/vaibhavvikas/jekyll-theme-minimalistic/actions/workflows/pages/pages-build-deployment)
-
-
-A fork of gh-pages minimal theme with navigation in the sidebar. You can view a live demo at [Minimalistic](https://vaibhavvikas.github.io/jekyll-theme-minimalistic/).
-
-## Usage
-
-To use the Minimalistic theme:
-
-1. Add the following line to your Gemfile
+**프로젝트기간**: 2022.07.11 ~ 2022.07.14 (총 4일간)
+**프로젝트명**: 요기어때
+**기획배경*
+'캠프 in 동작'인 만큼 동작구의 핫플레이스를 포스팅 할 수 있도록 하는 웹사이트를 만들자는 의견이 나와 바로 시작하게 되었다.
 
 ```ruby
 gem "jekyll-remote-theme"
