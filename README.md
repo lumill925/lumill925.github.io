@@ -2,165 +2,86 @@
 
 ## 이노베이션 캠프 in 동작 1주차 미니프로젝트
 
-**프로젝트기간**: 2022.07.11 ~ 2022.07.14 (총 4일간)
-**프로젝트명**: 요기어때
-**기획배경*
-'캠프 in 동작'인 만큼 동작구의 핫플레이스를 포스팅 할 수 있도록 하는 웹사이트를 만들자는 의견이 나와 바로 시작하게 되었다.
+**프로젝트기간**: 2022.07.11 ~ 2022.07.14 (총 4일간)  
+**프로젝트명**: 요기어때  
+**기획배경**: '캠프 in 동작'인 만큼 동작구의 핫플레이스를 포스팅 할 수 있는 웹사이트를 만들자는 의견이 나와 바로 시작하게 되었다.  
 
 ```ruby
-gem "jekyll-remote-theme"
+필수 포함 사항 
+   - Jinja2 템플릿 엔질을 이용한 서버사이드 렌더링
+   - JWT 인증 방식으로 로그인 구현하기
 ```
 
-then run `bundle install` to install the plugin.
+이전에 받은 교육을 통해 Python에 대해 어느정도 자신감이 있었지만 막상 프로젝트를 진행하며 막히는 부분이 많아 부족함을 느낄 수 있는 시간이었다.
+다행히 팀원분들의 도움으로 무사히 프로젝트를 마칠 수 있었던 것 같다.  
 
-2. Add the following to your site's `_config.yml` to activate the plugin:
+### 느낀 점
 
-```yml
-plugins:
-  - jekyll-remote-theme
-```
+원래 8월에 시작하는 캠프 in 서울을 지원했었지만 졸업한 대학이 동작구 소재였던터라 캠프 시작 3일전에 엉겹결에 캠프 in 동작에 들어오게 되었다.
+다행히 주말간 들을 수 있었던 강의를 통해 다른 캠프분들에게 뒤쳐지지 않게 노력했다고 생각했지만, 막상 프로젝트를 시작하니 당황스러웠다..  
+  
+내가 맡은 부분은 포스팅 작성, 수정, 삭제 기능을 구현하는 부분으로 포스팅에 관한 대부분의 기능을 담당했지만 결과적으로 봤을 때 혼자서만 구현한 기능은
+얼마 되지 않는것 같다. 더 열심히 해야지..  
+  
+### 어려웠던 점
+  
+JWT 인증 방식을 통해 구현한 로그인 기능에서의 문제는 토큰의 만료시간이 짧아 포스팅 할 때 로그아웃될 경우 포스팅하던 내용을 어떻게 할것이냐는 문제였다.
+웹페이지에서 계속해서 활동할 경우 토큰 기간이 연장되는 방식을 찾아봤지만 결과적으로 선택한것은 단순하게 토큰의 유효기간을 하루로 늘리는 방법이었다.(!)  
 
-Note: If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
+회고 멘토링을 진행하며 멘토님한테 물어보니 토큰 시간 말료에 대비하여 Refresh 토큰을 사용하여 DB에 저장하고, 시간이 만료되면 다시 재발행해서 전송하는 방식을 알려주셨다.
+다음 프로젝트때 사용하게 되면 찾아봐야지..  
 
-1. Add the following line to your `config.yml` to use the theme
+개인적으로 프로젝트를 진행하며 어려웠던 부분은 깃이었다. 깃을 처음 사용해 보다 보니 내가 잘못 Push하여 팀원들에게 문제가 생길것만 같아 조심 또 조심하면서 사용했다.
+프로젝트를 진행한 4일간 클론을 얼마나 다시 만든건지 모르겠다..  
 
-```yml
-remote_theme: vaibhavvikas/jekyll-theme-minimalistic
-```
+그리고 API.. 이건 뭔가 추상적인 개념으로만 다가오는 느낌이었다. Open API라는 말은 많이 들어봤지만, 그냥 API라는 단어는 뭔가 알고있다고 생각했지만 막상 생각해보면
+아는것이 하나도 없는 그런 느낌의 단어였다.  
 
-then running `bundle exec jekyll serve` for local deployment.
+### JWT 인증 방식
 
-## Customizing
+JWT 인증 방식으로 로그인 하는 건에 관한 강의를 열어주어서 들을 수 있었지만, 좀 더 자세한 내용을 알고 싶어 찾아보았다.  
 
-### Configuration variables
+JWT는 Json Web Token의 약자이고 인증에 필요한 정보들을 암호화시킨 토큰을 만한다. 세션방식처럼 토큰 자체를 코키에 담아서 보낼 수도 있고 HTTP 헤더에 담아서 보내줄 수도 있다.  
 
-Minimalistic will respect the following variables, if set in your site's `_config.yml`:
+토큰의 동작 방식은 다음과 같다.  
+  1. 클라이언트가 로그인 요청
+  2. 서버에서 유저의 고유한 ID와 다른 인증 정보들과 함께 Payload에 담는다.
+  3. JWT의 유효기간 설정 및 옵션을 설정해준다.
+  4. Secret Key를 이용해 토큰을 발급한다.
+  5. 발급된 토큰은 클라이언트에 쿠키 혹은 로컬스토리지 등에 저장하여 요청을 보낼때마다 같이 보낸다.
+  6. 서버는 토큰을 Secret Key로 복호화하여 검증하는 과정을 거친다.
+  7. 검증이 완료되면 대응하는 데이터를 보내준다.
 
-```yml
-title: [The title of your site]
-description: [A short description of your site's purpose]
-```
+### API
 
-Additionally, you may choose to set the following optional variables:
+프로젝트를 하며 API라는 말을 많이 하고 많이 들었지만 나에겐 뭔가 추상적인 개념인것만 같아 찾아보았다.  
 
-```yml
-google_analytics: [Your Google Analytics tracking ID]
-```
+**Application Programming Interface**, 응용 프로그램 프로그래밍 인터페이스  
+라이브러리는 실제 이를 바탕으로 구현한 결과물이다. 대개의 결우 독립된 응용 프로그램간의 상호작용은 '이미 구현된 코드'의 재사용이기 때문에
+라이브러리는 다시 쓰기 위해 미리 짜놓은 코드 뭉치들을 의미하는 것이고, API를 기반으로 구현되었다고 볼 수 있다.  
 
-Choose light, dark, or automatically adjusting theme based on system theme:
+그래도 API에 관해 잘 이해가 가지는 않지만.. 앞으로 계속 프로젝트와 공부를 통해 조금씩 이해해 나가야 할것 같다.
 
-```yml
-color-scheme: auto/light/dark
-```
+### 결과물  
+<p align="cencter">
+<img src="https://user-images.githubusercontent.com/48724199/178913025-3be998ac-2020-4e5c-a992-1e3136e783fe.gif">
+</p>
+<img src="https://user-images.githubusercontent.com/48724199/178924383-84775d7a-8f36-4944-a5a2-eed623d05215.gif">
 
-Specify logo for the website:
+### 이노베이션 캠프 in 동작 2주차 알고리즘
 
-```yml
-logo: /assets/img/<logo_file>
-```
+미니 프로젝트를 잘 마무리했다는 만족감도 잠시, 바로 다음날부터 2주차가 시작되었다. 새로운 팀원들과 프로그래밍 기초를 공부하며 알고리즘 문제를 풀어보고 공유하며 시간을 보냈다.
+월요일부터 TIL을 작성하며 2주차 에 대해 좀 더 자세하게 정리해 봐야겠다.
 
-Enable favicon by putting a `favicon.ico` in the repo's root directory and add the following line in `config.yml`:
 
-```yml
-favicon: true
-```
+### 정리
 
-### Customizing Sidebar
+1주일이 순식간에 지나갔다...  
+팀원들 덕분에 미니프로젝트를 잘 마무리 할 수 있었지만, 나 혼자 이것을 구현한다고 생각하니 끔찍한 기분도 들었다.  
+이제 시작이니까 부족함을 조금씩 채워나가야 겠다는 생각이 드는 1주일이었다..  
+  
+토요일 오전에 TIL에 관한 오시영님의 강의를 듣고 WIL을 적어봤는데 일기를 적어놓은것 같아 조금 이상한 기분이다.  
+  
+미니프로젝트를 마쳐서 일까, 새로운 팀원들과 알고리즘 공부를 시작했지만, 조금 아니 많이 헤이해진것 같은 느낌이 들었다.  
+월요일부터는 새로운 마음으로 다시 한 주를 보내야겠다는 생각이 든다.
 
-You can define a list of platforms that are linked from the sidebar in `_config.yml`:
-
-```yml
-platforms:
-  - name: GitHub
-    icon: <i class="fa-brands fa-github"></i>
-    link: https://github.com/vaibhavvikas
-  - name: LinkedIn
-    icon: <i class="fa-brands fa-linkedin"></i>
-    link: https://www.linkedin.com/in/vaibhavvikas
-  - ...
-```
-
-### Navigation
-
-You can also define, hyperlinks for specific pages or section of a pages (very helpful if creating multipage documentation or easy navigation between multiple sections). 
-
-For adding navigation do the following steps:
-
-1. Put your .md files in the root directory. and add the below text on top of pages to get it converted to html by jekyll.
-   
-```yml
----
-layout: default
----
-```
-
-2. Use the navigation example below to add navigation section in _config.yml file. Treat all your .md files as .html files. Currently it only supports one nesting in sublist.
-
-```yml
-navigation:
-  - name: Readme
-    link: ./index.html
-    sublist:
-      - name: Image
-        link: ./index.html#small-image
-  - name: Another Page
-    link: ./another-page.html
-  - ...
-```
-
-### Example:
-
-[Live Example](https://vaibhavvikas.github.io/jekyll-theme-minimalistic/)\
-[Code used in GitHub page](https://github.com/vaibhavvikas/jekyll-theme-minimalistic/tree/gh-pages)
-
-Lets say you have a file name xyz.md, you put that into the root dir. Now, add the text in step 1 at the top of the md file. After that for the text in _config.yml you will put it like:
-
-```yml
-navigation:
-  - name: [Write name of your hyperlink]
-    link: ./xyz.html
-```
-
-### Stylesheet
-
-If you'd like to add your own custom styles:
-
-1. Create a file called `/assets/css/style.scss` in your site
-2. Add the following content to the top of the file, exactly as shown:
-
-    ```scss
-    ---
-    ---
-
-    @import "{{ site.theme }}";
-    ```
-
-3. Add any custom CSS (or Sass, including imports) you'd like immediately after the `@import` line
-
-*Note: If you'd like to change the theme's Sass variables, you must set new values before the `@import` line in your stylesheet.*
-
-### Customizing Google Analytics code
-
-Google has released several iterations to their Google Analytics code over the years since this theme was first created. If you would like to take advantage of the latest code, paste it into `_includes/head-custom-google-analytics.html` in your Jekyll site.
-
-## Previewing the theme locally
-
-If you'd like to preview the theme locally (for example, in the process of proposing a change):
-
-1. Clone down the theme's repository (`git clone https://github.com/vaibhavvikas/jekyll-theme-minimalistic`)
-2. `cd` into the theme's directory
-3. Run `script/bootstrap` to install the necessary dependencies
-4. Run `bundle exec jekyll serve` to start the preview server
-5. Visit [`localhost:4000`](http://localhost:4000) in your browser to preview the theme
-
-## Running tests
-
-The theme contains a minimal test suite, to ensure a site with the theme would build successfully. To run the tests, simply run `script/cibuild`. You'll need to run `script/bootstrap` once before the test script will work.
-
-## Contributors
-
-All contributions are welcome.
-
-## Credits:
-
-This theme was built using [Minimalist](https://github.com/BDHU/minimalist) theme by BDHU and [Minimal](https://github.com/pages-themes/minimal) by GithHub.
